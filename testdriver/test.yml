@@ -1,0 +1,34 @@
+version: 4.0.22
+steps:
+  - prompt: focus chrome
+    commands:
+      - command: focus-application
+        name: Google Chrome
+  - prompt: click new task
+    commands:
+      - command: hover-text
+        text: New Task
+        description: button to create a new task
+        action: click
+  - prompt: enter "Fix testdriverai" into the text box
+    commands:
+      - command: hover-text
+        text: Title
+        description: text box for task title
+        action: click
+      - command: type
+        text: Fix testdriverai
+  - prompt: click create task
+    commands:
+      - command: hover-text
+        text: Create Task
+        description: button to create the task
+        action: click
+  - prompt: Close Terminal Window
+    commands:
+      - command: focus-application
+        name: Windows PowerShell
+      - command: press-keys
+        keys:
+          - alt
+          - f4

@@ -1,0 +1,36 @@
+name: TestDriver.ai
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */2 * * *"
+
+jobs:
+  test:
+    name: "TestDriver"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: testdriverai/action@main
+        with:
+          key: ${{secrets.TESTDRIVER_API_KEY}}
+          prompt: |
+            1. /run testdriver/test.yml
+          prerun: |
+            cd $env:TEMP
+            cd ..
+            git clone https://github.com/testdriverai/example-react-todo.git
+            cd example-react-todo
+            npm install
+            Start-Process npm -ArgumentList "run start"
+            cd $env:TEMP
+            npm init -y
+            # npm install dashcam-chrome
+            Start-Process "C:/Program Files/Google/Chrome/Application/chrome.exe" -ArgumentList "--start-maximized", "${{ env.WEBSITE_URL }}"
+            exit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE_COLOR: "3"
+          WEBSITE_URL: "https://localhost:3000" # Define the website URL here
